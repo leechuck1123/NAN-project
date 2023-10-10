@@ -2,7 +2,7 @@ const BASE_URL = "http://localhost";
 
 async function httpGetPlanets() {
   // Load planets and return as JSON.
-  const response = await fetch(`${BASE_URL}:8000/`);
+  const response = await fetch(`${BASE_URL}:8000/planets`);
   return await response.json();
 }
 
