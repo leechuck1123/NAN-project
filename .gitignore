@@ -1,3 +1,4 @@
 .DS_Store
+data/kepler_data.csv
 server/node_modules/
 client/node_modules/
