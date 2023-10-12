@@ -1,10 +1,12 @@
 const express = require('express');
-const planetRouter = require('./routes/planets/route');
-const launcheRouter = require('./routes/launches/route');
 const cors = require('cors');
 const path = require('path');
 
+const planetRouter = require('./routes/planets/route');
+const launcheRouter = require('./routes/launches/route');
+
 const app = express()
+
 
 app.use(cors({
     origin: 'http://localhost:3000',
