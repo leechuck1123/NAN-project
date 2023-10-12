@@ -7,7 +7,6 @@ const launcheRouter = require('./routes/launches/route');
 
 const app = express()
 
-
 app.use(cors({
     origin: 'http://localhost:3000',
 }));
