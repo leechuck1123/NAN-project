@@ -1,5 +1,6 @@
 const express = require('express');
 const planetRouter = require('./routes/planets/route');
+const launcheRouter = require('./routes/launches/route');
 const cors = require('cors');
 const path = require('path');
 
@@ -12,6 +13,11 @@ app.use(cors({
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "..", "public")));
 
-app.use(planetRouter);
+app.use('/planets', planetRouter);
+app.use('/launches', launcheRouter);
+
+app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
+});
 
 module.exports = app;
