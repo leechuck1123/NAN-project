@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const { parse } = require('csv-parse');
+const planets = require('./planets.mongo');
 
 function is_planet_herbitable(planet) {
     return planet['koi_disposition'] === 'CONFIRMED'
@@ -8,24 +9,34 @@ function is_planet_herbitable(planet) {
         && planet['koi_prad'] < 1.6;
 }
 
-function getAllPlanetsData() {
+function loadPlanetsData() {
     return new Promise((resolve, reject) => {
-        const herbitable_planet = []
         fs.createReadStream(path.join(__dirname, '..', '..', 'data', 'kepler_data.csv'))
             .pipe(parse({
                 comment: '#',
                 columns: true
             }))
-            .on('data', (data) => {
+            .on('data', async (data) => {
                 if (is_planet_herbitable(data)) {
-                    herbitable_planet.push(data);
+                    await planets.updateOne({
+                        keplerName: data.kepler_name
+                    },
+                        {
+                            keplerName: data.kepler_name
+                        }, {
+                        upsert: true,
+                    });
                 }
-            }).on('end', () => {
-                resolve(herbitable_planet);
+            }).on('end', async () => {
+                resolve(await getAllPlanetsData());
             }).on('error', (err) => {
                 reject("Error occurs");
             });
     });
 }
 
-module.exports = { getAllPlanetsData }
+async function getAllPlanetsData() {
+    return await planets.find({}, { "__v": 0, "_id": 0 });
+}
+
+module.exports = { getAllPlanetsData, loadPlanetsData }

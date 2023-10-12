@@ -23,7 +23,7 @@ async function httpAddNewLaunch(req, res) {
         });
     }
 
-    addNewLaunch(launch);
+    await addNewLaunch(launch);
     return res.status(201).json({ ok: true });
 }
 

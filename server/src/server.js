@@ -1,5 +1,6 @@
 const http = require('http');
 const app = require('./app');
+const { loadPlanetsData } = require('./models/planets')
 const mongoose = require('mongoose');
 
 const PORT = 8000;
@@ -14,7 +15,7 @@ mongoose.connection.once('open', () => {
 
 async function startServer() {
     await mongoose.connect(MONGO_URL);
-
+    await loadPlanetsData();
     server.listen(PORT, () => {
         console.log(`The server listens on port ${PORT}`);
     });
